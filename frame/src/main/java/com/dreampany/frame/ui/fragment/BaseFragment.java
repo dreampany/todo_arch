@@ -34,9 +34,16 @@ public abstract class BaseFragment extends DaggerFragment implements LifecycleOw
         if (layoutId != 0) {
             binding = DataBindingUtil.inflate(inflater, layoutId, container, false);
             view = binding.getRoot();
-            return view;
+        } else {
+            view = super.onCreateView(inflater, container, savedInstanceState);
         }
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        onStartUi(savedInstanceState);
     }
 
     @Override

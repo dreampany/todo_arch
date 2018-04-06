@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 
+import com.dreampany.frame.ui.fragment.BaseFragment;
 import com.dreampany.frame.util.BarUtil;
 
 import dagger.android.support.DaggerAppCompatActivity;
@@ -17,6 +18,7 @@ import dagger.android.support.DaggerAppCompatActivity;
 public abstract class BaseActivity extends DaggerAppCompatActivity implements LifecycleOwner {
 
     protected ViewDataBinding binding;
+    private BaseFragment currentFragment;
 
     protected int getLayoutId() {
         return 0;
@@ -69,7 +71,6 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Li
             }
         }
 
-        // inform child about initialization
         onStartUi(savedInstanceState);
     }
 
