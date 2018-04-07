@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.dreampany.frame.R;
 import com.dreampany.frame.ui.fragment.BaseFragment;
 import com.dreampany.frame.util.BarUtil;
 
@@ -26,7 +27,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Li
     }
 
     protected int getToolbarId() {
-        return 0;
+        return R.id.toolbar;
     }
 
     protected boolean isFullScreen() {
@@ -38,7 +39,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Li
     protected abstract void onStopUi();
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         int layoutId = getLayoutId();
@@ -72,7 +73,12 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Li
             }
         }
 
-        onStartUi(savedInstanceState);
+        binding.getRoot().post(new Runnable() {
+            @Override
+            public void run() {
+                onStartUi(savedInstanceState);
+            }
+        });
     }
 
     @Override
