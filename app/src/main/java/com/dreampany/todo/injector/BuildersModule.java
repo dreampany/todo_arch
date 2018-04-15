@@ -1,6 +1,6 @@
-package com.dreampany.todo.di;
+package com.dreampany.todo.injector;
 
-import com.dreampany.frame.di.ActivityScoped;
+import com.dreampany.frame.injector.ActivityScoped;
 import com.dreampany.todo.ui.activity.LaunchActivity;
 import com.dreampany.todo.ui.activity.NavigationActivity;
 
@@ -14,6 +14,6 @@ public abstract class BuildersModule {
     abstract LaunchActivity launchActivity();
 
     @ActivityScoped
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = {TaskModule.class, MoreModule.class})
     abstract NavigationActivity navigationActivity();
 }

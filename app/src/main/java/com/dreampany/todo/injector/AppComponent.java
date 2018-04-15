@@ -1,9 +1,9 @@
-package com.dreampany.todo.di;
+package com.dreampany.todo.injector;
 
 
 import android.app.Application;
 
-import com.dreampany.frame.di.AppModule;
+import com.dreampany.frame.injector.AppModule;
 import com.dreampany.todo.app.App;
 
 import javax.inject.Singleton;

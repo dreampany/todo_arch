@@ -1,15 +1,10 @@
 package com.dreampany.frame.ui.activity;
 
-import android.support.v7.view.ActionMode;
 import android.view.Menu;
 
 public abstract class BaseMenuActivity extends BaseActivity {
 
     protected int getMenuId() {
-        return 0;
-    }
-
-    protected int getContextualMenuId() {
         return 0;
     }
 

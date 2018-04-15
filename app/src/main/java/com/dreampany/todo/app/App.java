@@ -1,7 +1,7 @@
 package com.dreampany.todo.app;
 
 import com.dreampany.frame.app.BaseApp;
-import com.dreampany.todo.di.DaggerAppComponent;
+import com.dreampany.todo.injector.DaggerAppComponent;
 
 import dagger.android.AndroidInjector;
 import dagger.android.support.DaggerApplication;

@@ -1,4 +1,4 @@
-package com.dreampany.frame.di;
+package com.dreampany.frame.injector;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -10,6 +10,7 @@ import javax.inject.Scope;
  * Created by air on 4/4/18.
  */
 
+@Documented
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ActivityScoped {

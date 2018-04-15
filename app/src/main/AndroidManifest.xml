@@ -28,6 +28,5 @@
             android:label=""
             android:launchMode="singleTask" />
 
-
     </application>
 </manifest>
