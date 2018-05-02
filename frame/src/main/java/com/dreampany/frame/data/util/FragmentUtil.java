@@ -9,7 +9,7 @@ public final class FragmentUtil {
     private FragmentUtil() {
     }
 
-    public static <T extends Fragment> T commitFragment(final AppCompatActivity activity, final Class<T> fragmentClass, final int parentId) {
+/*    public static <T extends Fragment> T commitFragment(final AppCompatActivity activity, final Class<T> fragmentClass, final int parentId) {
 
         final T fragment = getFragment(activity, fragmentClass);
 
@@ -30,7 +30,7 @@ public final class FragmentUtil {
         AndroidUtil.getUiHandler().postDelayed(commitRunnable, 250L);
 
         return fragment;
-    }
+    }*/
 
     public static <T extends Fragment> T commitFragment(final AppCompatActivity activity, final T fragment, final int parentId) {
 

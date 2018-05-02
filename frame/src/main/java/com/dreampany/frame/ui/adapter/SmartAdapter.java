@@ -1,22 +1,36 @@
-package com.dreampany.frame.data.adapter;
+package com.dreampany.frame.ui.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
 
-import com.dreampany.frame.data.model.BaseItem;
+import com.dreampany.frame.ui.model.BaseItem;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.databinding.BindingFlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
+import eu.davidea.viewholders.FlexibleViewHolder;
 
 /**
  * Created by air on 9/15/17.
  */
 
 public class SmartAdapter<T extends BaseItem> extends BindingFlexibleAdapter<T> {
+
+    public static class SmartViewHolder extends FlexibleViewHolder {
+
+        protected SmartViewHolder(View view, FlexibleAdapter adapter) {
+            super(view, adapter);
+        }
+
+        public Context getContext() {
+            return itemView.getContext();
+        }
+    }
 
     private View.OnClickListener clickListener;
     private View.OnLongClickListener longClickListener;

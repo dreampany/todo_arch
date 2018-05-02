@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="${relativePackage}.${activityClass}">
 
+    <data>
+
+        <variable
+            name="items"
+            type="android.databinding.ObservableArrayList" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -42,6 +49,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scrollbars="none"
+                            auto:items="@{items}"
                             tools:listitem="@layout/item_list" />
 
                     </FrameLayout>

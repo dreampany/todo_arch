@@ -5,18 +5,26 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
 import com.afollestad.aesthetic.Aesthetic;
+import com.afollestad.aesthetic.AestheticKeyProvider;
+import com.afollestad.aesthetic.BottomNavBgMode;
+import com.afollestad.aesthetic.BottomNavIconTextMode;
 import com.dreampany.frame.R;
+import com.dreampany.frame.data.model.Task;
 import com.dreampany.frame.data.util.BarUtil;
 import com.dreampany.frame.data.util.FragmentUtil;
 import com.dreampany.frame.ui.fragment.BaseFragment;
+
+import java.io.Serializable;
 
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
@@ -25,7 +33,10 @@ import dagger.android.support.DaggerAppCompatActivity;
 public abstract class BaseActivity extends DaggerAppCompatActivity implements LifecycleOwner {
 
     protected ViewDataBinding binding;
-    private BaseFragment currentFragment;
+    protected Task currentTask;
+    protected BaseFragment currentFragment;
+    protected boolean fireOnStartUi = true;
+
 
     protected int getLayoutId() {
         return 0;
@@ -39,15 +50,20 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Li
         return false;
     }
 
+    protected boolean isHomeUp() {
+        return true;
+    }
+
     protected abstract void onStartUi(Bundle state);
 
     protected abstract void onStopUi();
+
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         Aesthetic.attach(this);
         super.onCreate(savedInstanceState);
-
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         int layoutId = getLayoutId();
         if (layoutId != 0) {
             if (isFullScreen()) {
@@ -70,45 +86,41 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Li
                         toolbar.setVisibility(View.VISIBLE);
                     }
                     setSupportActionBar(toolbar);
-                    ActionBar actionBar = getSupportActionBar();
-                    if (actionBar != null) {
-                        actionBar.setDisplayHomeAsUpEnabled(true);
-                        actionBar.setHomeButtonEnabled(true);
+                    if (isHomeUp()) {
+                        ActionBar actionBar = getSupportActionBar();
+                        if (actionBar != null) {
+                            actionBar.setDisplayHomeAsUpEnabled(true);
+                            actionBar.setHomeButtonEnabled(true);
+                        }
                     }
                 }
             }
 
-            if (Aesthetic.isFirstTime()) {
-                Aesthetic.get()
-                        .colorPrimaryRes(R.color.colorPrimary)
-                        .colorAccentRes(R.color.colorAccent)
-                        .colorStatusBarAuto()
-                        .apply();
-            }
+            //if (Aesthetic.isFirstTime()) {
+            Aesthetic.get()
+                    .colorPrimaryRes(R.color.colorPrimary)
+                    .colorPrimaryDarkRes(R.color.colorPrimaryDark)
+                    .colorAccentRes(R.color.colorAccent)
+                    .colorStatusBarAuto()
+                    .colorNavigationBarAuto()
+                    .textColorPrimaryRes(android.R.color.black)
+                    .textColorPrimaryInverseRes(android.R.color.white)
+                    .textColorSecondaryRes(R.color.material_grey500)
+                    .textColorSecondaryInverseRes(R.color.material_grey100)
+                    //.bottomNavigationBackgroundMode(BottomNavBgMode.PRIMARY)
+                    //.bottomNavigationIconTextMode(BottomNavIconTextMode.SELECTED_ACCENT)
+                    .apply();
+            //}
         }
-
-        binding.getRoot().post(new Runnable() {
-            @Override
-            public void run() {
-                onStartUi(savedInstanceState);
-            }
-        });
+        if (fireOnStartUi) {
+            onStartUi(savedInstanceState);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Aesthetic.resume(this);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -121,6 +133,72 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Li
     protected void onDestroy() {
         onStopUi();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+/*        if (!beBackPressed()) {
+            return;
+        }
+
+        BaseFragment currentFragment = getCurrentFragment();
+        if (currentFragment != null) {
+            if (currentFragment.beBackPressed()) {
+                return;
+            }
+        }
+
+        FragmentManager manager = getSupportFragmentManager();
+        if (manager.getBackStackEntryCount() > 0) {
+            manager.popBackStack();
+            return;
+        }*/
+
+        super.onBackPressed();
+    }
+
+/*    @Nullable
+    @Override
+    public String key() {
+        return "base";
+    }*/
+
+    protected Task getCurrentTask(boolean freshTask) {
+        if (currentTask == null || freshTask) {
+            currentTask = getIntentValue(Task.class.getSimpleName());
+        }
+        return currentTask;
+    }
+
+    protected <T> T getIntentValue(String key) {
+        Bundle bundle = getBundle();
+        return getIntentValue(key, bundle);
+    }
+
+    protected <T> T getIntentValue(String key, Bundle bundle) {
+        T t = null;
+        if (bundle != null) {
+            t = (T) bundle.getParcelable(key);
+        }
+        if (bundle != null && t == null) {
+            t = (T) bundle.getSerializable(key);
+        }
+        return t;
+    }
+
+    protected Bundle getBundle() {
+        return getIntent().getExtras();
     }
 
     public void setTitle(String title) {
@@ -145,21 +223,53 @@ public abstract class BaseActivity extends DaggerAppCompatActivity implements Li
         this.currentFragment = fragment;
     }
 
-    protected void openActivity(Class<?> clazz) {
+    public void openActivity(Class<?> clazz) {
         startActivity(new Intent(this, clazz));
     }
 
-    protected <T extends BaseFragment> T commitFragment(final Class<T> fragmentClass, final int parentId) {
+    public void openActivityForResult(Class<?> clazz, int requestCode) {
+        startActivityForResult(new Intent(this, clazz), requestCode);
+    }
+
+    public void openActivityParcelable(Class<?> clazz, Task task) {
+        Intent bundle = new Intent(this, clazz);
+        bundle.putExtra(Task.class.getSimpleName(), (Parcelable) task);
+        startActivity(bundle);
+    }
+
+    public void openActivitySerializable(Class<?> clazz, Task task) {
+        Intent bundle = new Intent(this, clazz);
+        bundle.putExtra(Task.class.getSimpleName(), (Serializable) task);
+        startActivity(bundle);
+    }
+
+/*    protected <T extends BaseFragment> T commitFragment(final Class<T> fragmentClass, final int parentId) {
         T currentFragment = FragmentUtil.commitFragment(this, fragmentClass, parentId);
         setCurrentFragment(currentFragment);
         return currentFragment;
-    }
+    }*/
 
     protected <T extends BaseFragment> T commitFragment(Class<T> clazz, Lazy<T> fragmentProvider, final int parentId) {
         T fragment = FragmentUtil.getFragmentByTag(this, clazz.getSimpleName());
         if (fragment == null) {
             fragment = fragmentProvider.get();
         }
+        T currentFragment = FragmentUtil.commitFragment(this, fragment, parentId);
+        setCurrentFragment(currentFragment);
+        return currentFragment;
+    }
+
+    protected <T extends BaseFragment> T commitFragment(Class<T> clazz, Lazy<T> fragmentProvider, final int parentId, Task task) {
+        T fragment = FragmentUtil.getFragmentByTag(this, clazz.getSimpleName());
+        if (fragment == null) {
+            fragment = fragmentProvider.get();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Task.class.getSimpleName(), task);
+            fragment.setArguments(bundle);
+        } else {
+            fragment.getArguments().putParcelable(Task.class.getSimpleName(), task);
+        }
+
         T currentFragment = FragmentUtil.commitFragment(this, fragment, parentId);
         setCurrentFragment(currentFragment);
         return currentFragment;

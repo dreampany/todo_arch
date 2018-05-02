@@ -5,7 +5,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 
 import com.dreampany.frame.R;
-import com.dreampany.frame.data.adapter.SmartAdapter;
+import com.dreampany.frame.ui.adapter.SmartAdapter;
 
 public final class ViewUtil {
 

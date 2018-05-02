@@ -14,16 +14,23 @@ public abstract class BaseBottomNavigationActivity extends BaseMenuActivity impl
         return 0;
     }
 
+    protected int getDefaultSelectedNavItemId() {
+        return 0;
+    }
+
     protected abstract void onNavigationItem(int navItemId);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        fireOnStartUi = false;
         super.onCreate(savedInstanceState);
 
-        final BottomNavigationView bottomNavigationView = findViewById(getNavigationViewId());
-        if (bottomNavigationView != null) {
-            bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        final BottomNavigationView navigationView = findViewById(getNavigationViewId());
+        if (navigationView != null) {
+            navigationView.setOnNavigationItemSelectedListener(this);
         }
+        setSelectedItem(getDefaultSelectedNavItemId());
+        onStartUi(savedInstanceState);
     }
 
     @Override
@@ -38,14 +45,16 @@ public abstract class BaseBottomNavigationActivity extends BaseMenuActivity impl
     }
 
     public void setSelectedItem(final int navItemId) {
-        final BottomNavigationView bottomNavigationView = findViewById(getNavigationViewId());
-        if (bottomNavigationView != null) {
-            bottomNavigationView.post(new Runnable() {
-                @Override
-                public void run() {
-                    bottomNavigationView.setSelectedItemId(navItemId);
-                }
-            });
+        if (navItemId != 0) {
+            final BottomNavigationView navigationView = findViewById(getNavigationViewId());
+            if (navigationView != null) {
+                navigationView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        navigationView.setSelectedItemId(navItemId);
+                    }
+                });
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'idea'
 
 idea {
@@ -28,10 +29,10 @@ android {
         }
     }
     buildTypes {
-        release {
-            minifyEnabled true
+        debug {
+            minifyEnabled false
             useProguard false
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
@@ -41,8 +42,8 @@ android {
         }
     }
     compileOptions {
-        //sourceCompatibility JavaVersion.VERSION_1_8
-        //targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     dataBinding {
         enabled = true
@@ -55,24 +56,24 @@ dependencies {
 
     //test
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     //framework
     implementation project(':frame')
 
     //android arch
-    implementation 'android.arch.persistence.room:runtime:1.0.0'
-    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0'
-    implementation 'android.arch.persistence.room:rxjava2:1.0.0'
-    implementation 'android.arch.persistence.room:guava:1.1.0-beta2'
+    implementation 'android.arch.persistence.room:runtime:1.1.0-beta3'
+    kapt 'android.arch.persistence.room:compiler:1.1.0-beta3'
+    implementation 'android.arch.persistence.room:rxjava2:1.1.0-beta3'
+    implementation 'android.arch.persistence.room:guava:1.1.0-beta3'
 
     //dagger core
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
+    kapt 'com.google.dagger:dagger-compiler:2.15'
     implementation 'com.google.dagger:dagger:2.15'
 
     //dagger android
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
+    kapt 'com.google.dagger:dagger-android-processor:2.15'
     implementation 'com.google.dagger:dagger-android-support:2.15'
     implementation 'com.google.dagger:dagger-android:2.15'
 

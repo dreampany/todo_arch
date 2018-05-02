@@ -12,10 +12,8 @@ import com.dreampany.frame.databinding.FragmentItemsBinding;
 import com.dreampany.frame.injector.ActivityScoped;
 import com.dreampany.frame.ui.fragment.BaseMenuFragment;
 import com.dreampany.todo.R;
-import com.dreampany.todo.data.adapter.MoreAdapter;
-import com.dreampany.todo.data.enums.MoreType;
-import com.dreampany.todo.data.model.MoreItem;
-import com.dreampany.todo.databinding.FragmentTasksBinding;
+import com.dreampany.todo.ui.adapter.MoreAdapter;
+import com.dreampany.todo.ui.model.MoreItem;
 
 import javax.inject.Inject;
 
@@ -50,6 +48,12 @@ public class MoreFragment extends BaseMenuFragment implements
         setTitle(R.string.title_more);
         binding = (FragmentItemsBinding) super.binding;
         initRecycler();
+        binding.getRoot().post(new Runnable() {
+            @Override
+            public void run() {
+                produceItems();
+            }
+        });
     }
 
     @Override

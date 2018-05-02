@@ -1,12 +1,13 @@
-package com.dreampany.todo.data.model;
+package com.dreampany.todo.ui.model;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dreampany.frame.data.model.BaseItem;
+import com.dreampany.frame.data.model.Base;
 import com.dreampany.frame.data.util.TextUtil;
+import com.dreampany.frame.ui.adapter.SmartAdapter;
+import com.dreampany.frame.ui.model.BaseItem;
 import com.dreampany.todo.R;
 import com.dreampany.todo.data.enums.MoreType;
 import com.google.common.base.Objects;
@@ -16,20 +17,18 @@ import java.util.List;
 
 import eu.davidea.flexibleadapter.FlexibleAdapter;
 import eu.davidea.flexibleadapter.items.IFlexible;
-import eu.davidea.viewholders.FlexibleViewHolder;
 
 /**
  * Created by air on 10/18/17.
  */
 
-public class MoreItem extends BaseItem<MoreItem.ViewHolder> implements IFlexible<MoreItem.ViewHolder> {
+public class MoreItem extends BaseItem<Base, MoreItem.ViewHolder> implements IFlexible<MoreItem.ViewHolder> {
 
     private MoreType type;
-    private int layoutId;
 
     public MoreItem(MoreType type) {
+        super(null, R.layout.item_more);
         this.type = type;
-        this.layoutId = R.layout.item_more;
     }
 
     public MoreType getType() {
@@ -48,11 +47,6 @@ public class MoreItem extends BaseItem<MoreItem.ViewHolder> implements IFlexible
     @Override
     public int hashCode() {
         return Objects.hashCode(type);
-    }
-
-    @Override
-    public int getLayoutRes() {
-        return layoutId;
     }
 
     @Override
@@ -91,7 +85,22 @@ public class MoreItem extends BaseItem<MoreItem.ViewHolder> implements IFlexible
         }
     }
 
-    static final class ViewHolder extends FlexibleViewHolder {
+    @Override
+    public void unbindViewHolder(FlexibleAdapter<IFlexible> adapter, ViewHolder holder, int position) {
+
+    }
+
+    @Override
+    public void onViewAttached(FlexibleAdapter<IFlexible> adapter, ViewHolder holder, int position) {
+
+    }
+
+    @Override
+    public void onViewDetached(FlexibleAdapter<IFlexible> adapter, ViewHolder holder, int position) {
+
+    }
+
+    static final class ViewHolder extends SmartAdapter.SmartViewHolder {
 
         ImageView icon;
         TextView title;
@@ -100,10 +109,6 @@ public class MoreItem extends BaseItem<MoreItem.ViewHolder> implements IFlexible
             super(view, adapter);
             icon = view.findViewById(R.id.viewIcon);
             title = view.findViewById(R.id.viewTitle);
-        }
-
-        Context getContext() {
-            return itemView.getContext();
         }
     }
 

@@ -4,8 +4,8 @@ import android.os.Bundle;
 
 import com.dreampany.frame.ui.activity.BaseBottomNavigationActivity;
 import com.dreampany.todo.R;
-import com.dreampany.todo.ui.fragment.MoreFragment;
 import com.dreampany.todo.ui.fragment.TasksFragment;
+import com.dreampany.todo.ui.fragment.MoreFragment;
 
 import javax.inject.Inject;
 
@@ -34,6 +34,16 @@ public class NavigationActivity extends BaseBottomNavigationActivity {
     }
 
     @Override
+    protected int getDefaultSelectedNavItemId() {
+        return R.id.item_task;
+    }
+
+    @Override
+    protected boolean isHomeUp() {
+        return false;
+    }
+
+    @Override
     protected void onStartUi(Bundle state) {
 
     }
@@ -49,11 +59,11 @@ public class NavigationActivity extends BaseBottomNavigationActivity {
     @Override
     protected void onNavigationItem(int navItemId) {
         switch (navItemId) {
-            case R.id.item_home:
+            case R.id.item_task:
                 commitFragment(TasksFragment.class, tasksFragmentProvider, R.id.layout);
                 break;
             case R.id.item_more:
-                //commitFragment(MoreFragment.class, moreFragmentProvider, R.id.layout);
+                commitFragment(MoreFragment.class, moreFragmentProvider, R.id.layout);
                 break;
         }
     }

@@ -19,10 +19,6 @@ public abstract class BaseNavigationActivity extends BaseMenuActivity implements
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawerLayout;
 
-    protected int getDefaultSelectedNavItemId() {
-        return 0;
-    }
-
     protected int getDrawerLayoutId() {
         return 0;
     }
@@ -43,6 +39,10 @@ public abstract class BaseNavigationActivity extends BaseMenuActivity implements
         return R.string.navigation_drawer_close;
     }
 
+    protected int getDefaultSelectedNavItemId() {
+        return 0;
+    }
+
     protected String getNavigationTitle(int navItemId) {
         return null;
     }
@@ -55,9 +55,8 @@ public abstract class BaseNavigationActivity extends BaseMenuActivity implements
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        fireOnStartUi = false;
         super.onCreate(savedInstanceState);
-
-
         if (toggle == null) {
             drawerLayout = findViewById(getDrawerLayoutId());
             Toolbar toolbar = findViewById(getToolbarId());
@@ -94,6 +93,7 @@ public abstract class BaseNavigationActivity extends BaseMenuActivity implements
                     navMenu.performIdentifierAction(getDefaultSelectedNavItemId(), 0);
                 }
             }
+            onStartUi(savedInstanceState);
         }
     }
 

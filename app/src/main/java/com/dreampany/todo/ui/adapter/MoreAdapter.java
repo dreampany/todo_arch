@@ -1,9 +1,9 @@
-package com.dreampany.todo.data.adapter;
+package com.dreampany.todo.ui.adapter;
 
 
-import com.dreampany.frame.data.adapter.SmartAdapter;
+import com.dreampany.frame.ui.adapter.SmartAdapter;
 import com.dreampany.todo.data.enums.MoreType;
-import com.dreampany.todo.data.model.MoreItem;
+import com.dreampany.todo.ui.model.MoreItem;
 
 /**
  * Created by air on 24/2/18.
