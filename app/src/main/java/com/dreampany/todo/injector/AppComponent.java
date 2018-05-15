@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.dreampany.frame.injector.AppModule;
 import com.dreampany.todo.app.App;
+import com.dreampany.todo.data.source.TasksRepository;
 
 import javax.inject.Singleton;
 
@@ -21,6 +22,9 @@ import dagger.android.support.AndroidSupportInjectionModule;
         TasksRepositoryModule.class
 })
 public interface AppComponent extends AndroidInjector<App> {
+
+    TasksRepository getTasksRepository();
+
     @Component.Builder
     interface Builder {
         @BindsInstance

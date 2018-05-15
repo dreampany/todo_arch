@@ -23,8 +23,8 @@ import javax.inject.Inject;
 public class EditTaskFragment extends BaseMenuFragment
         implements EditTaskContract.View, View.OnClickListener {
 
-    private FragmentEditTaskBinding binding;
-    @Inject
+//    private FragmentEditTaskBinding binding;
+    //@Inject
     EditTaskContract.Presenter presenter;
 
     @Inject
@@ -80,11 +80,11 @@ public class EditTaskFragment extends BaseMenuFragment
 
     private void initView() {
         binding = (FragmentEditTaskBinding) super.binding;
-        binding.fab.setOnClickListener(this);
+        //binding.fab.setOnClickListener(this);
 
     }
 
     private void doneTask() {
-        presenter.saveTask(binding.editTitle.getText().toString(), binding.editDescription.getText().toString());
+        //presenter.saveTask(binding.editTitle.getText().toString(), binding.editDescription.getText().toString());
     }
 }

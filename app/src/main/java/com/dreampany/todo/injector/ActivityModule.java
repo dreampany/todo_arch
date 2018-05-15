@@ -8,7 +8,6 @@ import com.dreampany.todo.ui.activity.ToolsActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
-@ActivityScoped
 @Module
 public abstract class ActivityModule {
     @ActivityScoped
