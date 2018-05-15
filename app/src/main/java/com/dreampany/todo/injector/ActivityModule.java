@@ -8,8 +8,9 @@ import com.dreampany.todo.ui.activity.ToolsActivity;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
+@ActivityScoped
 @Module
-public abstract class BuildersModule {
+public abstract class ActivityModule {
     @ActivityScoped
     @ContributesAndroidInjector
     abstract LaunchActivity launchActivity();
